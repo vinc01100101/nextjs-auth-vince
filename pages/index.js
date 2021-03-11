@@ -6,7 +6,7 @@ import { signIn, signOut, useSession } from "next-auth/client";
 
 const home = () => {
   const [session, loading] = useSession();
-
+  session && console.log(session.user);
   return (
     <div>
       Home Page
@@ -22,12 +22,20 @@ const home = () => {
         )}
         {session && (
           <>
-            Signed in as {session.user.email}
+            Signed in as {session.user.name}
+            <br />
+            {session.user.email}
+            <br />
+            <img src={session.user.image} />
             <br />
             <div>Private pages are now available</div>
             <button onClick={signOut}>Sign out</button>
           </>
         )}
+        <br />
+        <button>
+          <Link href="/secret">To the secret page!</Link>
+        </button>
       </main>
     </div>
   );

@@ -3,7 +3,6 @@ import Layout from "../components/Layout";
 
 //used to pass the session props all over the pages by wrapping this app
 import { Provider } from "next-auth/client";
-import Providers from "next-auth/providers";
 
 function MyApp({ Component, pageProps }) {
   return (

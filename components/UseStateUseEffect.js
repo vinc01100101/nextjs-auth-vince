@@ -14,14 +14,14 @@ const UseStateUseEffect = () => {
   };
 
   /*
-    useEffect(callback,statesArray)
+    useEffect(callback,targetsArray)
     @params callback {function} method to be invoked each call
-    @params statesArray {array} state variables to listen to in order to run useEffect
+    @params targetsArray {array} array of variables to listen for changes when running useEffect
 
     useEffect will always trigger after mounting the component (componentDidMount)
-    useEffect will trigger on each render if statesArray is not defined (componentDidUpdate)
-    however, it will be prevented by passing an empty statesArray or [] (componentDidMount only)
-    useEffect will only trigger when state variables that are defined inside statesArray changed (conditional componentDidUpdate optimization)
+    useEffect will trigger on each render if targetsArray is not defined (componentDidUpdate)
+    however, it will be prevented by passing an empty targetsArray or [] (componentDidMount only)
+    useEffect will only trigger when target variables have changed (conditional componentDidUpdate optimization)
     
   */
   useEffect(() => {
