@@ -10,7 +10,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
       <Head>
-        <title>Learning Roadmap</title>
+        <title>Learning NextJs MaterialUi NextAuth</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
