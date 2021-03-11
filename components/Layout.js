@@ -1,11 +1,17 @@
 import Nav from "./Nav";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles({
+  pTop: {
+    paddingTop: "50px",
+  },
+});
 const Layout = ({ children }) => {
+  const classes = useStyles();
   return (
     <div>
       <Nav />
-
-      {children}
+      <div className={classes.pTop}>{children}</div>
     </div>
   );
 };

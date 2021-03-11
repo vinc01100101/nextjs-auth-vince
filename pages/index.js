@@ -4,38 +4,49 @@ import React from "react";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/client";
 
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+
 const home = () => {
   const [session, loading] = useSession();
   session && console.log(session.user);
   return (
     <div>
-      Home Page
-      <div className={homStyles.card}>
+      <Typography variant="h1">Home Page</Typography>
+
+      {/* <div className={homStyles.card}>
         <UseStateUseEffect />
-      </div>
+      </div> */}
       <main>
         {!session && (
           <>
             Not signed in <br />
-            <button onClick={signIn}>Sign in</button>
+            <Button variant="contained" color="primary" onClick={signIn}>
+              Sign in
+            </Button>
           </>
         )}
         {session && (
           <>
-            Signed in as {session.user.name}
-            <br />
-            {session.user.email}
-            <br />
+            <Typography variant="h2">
+              Signed in as {session.user.name}
+            </Typography>
+            <Typography variant="h4">{session.user.email}</Typography>
+
             <img src={session.user.image} />
             <br />
             <div>Private pages are now available</div>
-            <button onClick={signOut}>Sign out</button>
+            <Button onClick={signOut} variant="contained" color="primary">
+              Sign out
+            </Button>
           </>
         )}
         <br />
-        <button>
-          <Link href="/secret">To the secret page!</Link>
-        </button>
+        <Button variant="contained" color="secondary">
+          <Link href="/secret">
+            GO TO PRIVATE ROUTE (something like /profile)
+          </Link>
+        </Button>
       </main>
     </div>
   );
