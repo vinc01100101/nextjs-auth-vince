@@ -7,7 +7,7 @@ const handler = async (req, res) => {
       await Users.create(req.body);
       res.redirect("/");
     } catch (e) {
-      res.send(e);
+      res.send("Email already exists");
     }
   } else {
     res.send("Only post method allowed");

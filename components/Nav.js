@@ -32,10 +32,17 @@ const Nav = () => {
   );
 
   //connect database
-  useEffect(async () => {
-    const res = await fetch("/api/initiate-connection");
-    const status = await res.json();
-    setIsConnected(status.status);
+  useEffect(() => {
+    const fetcher = async () => {
+      const res = await fetch("/api/initiate-connection");
+      const status = await res.json();
+      setIsConnected(status.status);
+      //refetch if still connecting to get the updated status
+      if (status.status == "connecting") {
+        setTimeout(fetcher, 5000);
+      }
+    };
+    fetcher();
   }, []);
 
   return (
