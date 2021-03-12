@@ -8,6 +8,7 @@ const useStyles = makeStyles({
 });
 const Layout = ({ children }) => {
   const classes = useStyles();
+
   return (
     <div>
       <Nav />
