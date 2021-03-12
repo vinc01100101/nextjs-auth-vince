@@ -7,6 +7,7 @@ export default (req, res) => {
       res.json({ type: "success", status });
     })
     .catch((err) => {
-      res.json({ type: "error", status: err });
+      console.log(err);
+      res.json({ type: "error", status: err.message });
     });
 };

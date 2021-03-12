@@ -4,6 +4,13 @@ import User from "../../../models/User";
 
 const development = process.env.NODE_ENV;
 
+const {
+  GITHUB_ID,
+  GITHUB_SECRET,
+  DEV_GITHUB_ID,
+  DEV_GITHUB_SECRET,
+} = process.env;
+
 const options = {
   providers: [
     Providers.Credentials({
@@ -49,12 +56,8 @@ const options = {
       },
     }),
     Providers.GitHub({
-      clientId: !development
-        ? process.env.GITHUB_ID
-        : process.env.DEV_GITHUB_ID,
-      clientSecret: !development
-        ? process.env.GITHUB_SECRET
-        : process.env.DEV_GITHUB_SECRET,
+      clientId: !development ? GITHUB_ID : DEV_GITHUB_ID,
+      clientSecret: !development ? GITHUB_SECRET : DEV_GITHUB_SECRET,
     }),
 
     // Provider.Twitter({
