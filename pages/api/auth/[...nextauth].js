@@ -3,7 +3,7 @@ import Providers from "next-auth/providers";
 import User from "@/models/User";
 
 //returns "production" if deployed in prod
-const development = process.env.NODE_ENV;
+const mode = process.env.NODE_ENV;
 
 //used localhost as callback in development mode
 const {
@@ -66,8 +66,8 @@ const options = {
       },
     }),
     Providers.GitHub({
-      clientId: !development ? GITHUB_ID : DEV_GITHUB_ID,
-      clientSecret: !development ? GITHUB_SECRET : DEV_GITHUB_SECRET,
+      clientId: mode == "production" ? GITHUB_ID : DEV_GITHUB_ID,
+      clientSecret: mode == "production" ? GITHUB_SECRET : DEV_GITHUB_SECRET,
     }),
   ],
   callbacks: {
