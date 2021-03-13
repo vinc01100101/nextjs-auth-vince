@@ -1,4 +1,4 @@
-import Users from "../../../models/User";
+import Users from "@/models/User";
 
 const handler = async (req, res) => {
   console.log("POSTING?", JSON.stringify(req.body));

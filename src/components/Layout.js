@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   pTop: {
-    paddingTop: "50px",
+    paddingTop: "70px",
   },
 });
 const Layout = ({ children }) => {

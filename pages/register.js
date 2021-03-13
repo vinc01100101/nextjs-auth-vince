@@ -16,6 +16,7 @@ const RegistrationForm = () => {
   });
   const [session, loading] = useSession();
   if (!loading && !session) {
+    //if no active session, do these..
     const handleChange = (e) => {
       const id = e.target.id;
       const value = e.target.value;
@@ -69,7 +70,9 @@ const RegistrationForm = () => {
       </form>
     );
   } else if (!loading && session) {
-    return <h1>Not allowed</h1>;
+    //if the browser has active session (user is authorized),
+    //redirect to homepage
+    return (window.location.href = "/");
   }
   return <h3>Loading..</h3>;
 };

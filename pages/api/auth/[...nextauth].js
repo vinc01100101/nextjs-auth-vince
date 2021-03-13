@@ -1,9 +1,11 @@
 import NextAuth from "next-auth";
 import Providers from "next-auth/providers";
-import User from "../../../models/User";
+import User from "@/models/User";
 
+//returns "production" if deployed in prod
 const development = process.env.NODE_ENV;
 
+//used localhost as callback in development mode
 const {
   GITHUB_ID,
   GITHUB_SECRET,
@@ -13,11 +15,11 @@ const {
 
 const options = {
   pages: {
-    // signIn: '/auth/signin',
-    // signOut: '/auth/signout',
-    // error: '/auth/error', // Error code passed in query string as ?error=
+    signIn: "/login",
+    signOut: "/login",
+    // error: "/auth/error", // Error code passed in query string as ?error=
     // verifyRequest: '/auth/verify-request', // (used for check email message)
-    newUser: "/", // If set, new users will be directed here on first sign in
+    // newUser: "/", // If set, new users will be directed here on first sign in
   },
   providers: [
     Providers.Credentials({
@@ -37,7 +39,7 @@ const options = {
       async authorize(credentials) {
         const findUser = (credentials) => {
           // You need to provide your own logic here that takes the credentials
-          // submitted and returns either a object representing a user or value
+          // submitted and returns either an object representing a user or value
           // that is false/null if the credentials are invalid.
           // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
 
@@ -58,6 +60,7 @@ const options = {
           const user = await findUser(credentials);
           return user;
         } catch (err) {
+          console.log(err);
           return null;
         }
       },
@@ -66,23 +69,44 @@ const options = {
       clientId: !development ? GITHUB_ID : DEV_GITHUB_ID,
       clientSecret: !development ? GITHUB_SECRET : DEV_GITHUB_SECRET,
     }),
-
-    // Provider.Twitter({
-    //   clientId: "",
-    //   clientSecret: "",
-    // }),
-
-    // Provider.Email({
-    //   server: "",
-    //   host: "",
-    //   port: "",
-    //   auth: {
-    //     user: "",
-    //     pass: "",
-    //   },
-    //   from: "",
-    // }),
   ],
+  callbacks: {
+    /**
+     * Use the signIn() callback to control if a user is allowed to sign in.
+     *
+     * @param  {object} user     User object
+     * @param  {object} account  Provider account
+     * @param  {object} profile  Provider profile
+     * @return {boolean|string}  Return `true` to allow sign in
+     *                           Return `false` to deny access
+     *                           Return `string` to redirect to (eg.: "/unauthorized")
+     */
+    async signIn(user, account, profile) {
+      console.log("SIGNING IN: " + JSON.stringify(user));
+      const isAllowedToSignIn = true;
+      if (isAllowedToSignIn) {
+        return true;
+      } else {
+        // Return false to display a default error message
+        return false;
+        // Or you can return a URL to redirect to:
+        // return '/unauthorized'
+      }
+    },
+
+    /**
+     * The redirect callback is called anytime the user is redirected to a callback URL (e.g. on signin or signout).
+     * By default only URLs on the same URL as the site are allowed, you can use the redirect callback to customise that behaviour.
+     *
+     * @param  {string} url      URL provided as callback URL by the client
+     * @param  {string} baseUrl  Default base URL of site (can be used as fallback)
+     * @return {string}          URL the client will be redirect to
+     */
+    async redirect(url, baseUrl) {
+      //this also prevents stacking the url with previous queries
+      return url.startsWith(baseUrl) ? url : baseUrl;
+    },
+  },
 };
 
 export default (req, res) => NextAuth(req, res, options);

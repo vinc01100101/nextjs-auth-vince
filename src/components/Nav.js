@@ -23,13 +23,11 @@ const useStyles = makeStyles({
 });
 const Nav = () => {
   //check if there's an active session
-  const [session, loading] = useSession();
+  const [session] = useSession();
   const classes = useStyles();
 
   //database status
-  const [isConnected, setIsConnected] = useState(
-    "Database status: disconnected"
-  );
+  const [isConnected, setIsConnected] = useState("connecting..");
 
   //connect database
   useEffect(() => {
