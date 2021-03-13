@@ -30,6 +30,7 @@ const RegistrationForm = () => {
         <FormControl>
           <InputLabel htmlFor="name">Name</InputLabel>
           <Input
+            required
             name="name"
             type="text"
             id="name"
@@ -41,6 +42,7 @@ const RegistrationForm = () => {
         <FormControl>
           <InputLabel htmlFor="email">E-mail</InputLabel>
           <Input
+            required
             name="email"
             type="email"
             id="email"
@@ -56,6 +58,7 @@ const RegistrationForm = () => {
         <FormControl>
           <InputLabel htmlFor="password">Password</InputLabel>
           <Input
+            required
             name="password"
             type="password"
             id="password"

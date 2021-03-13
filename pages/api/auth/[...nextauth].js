@@ -16,7 +16,7 @@ const {
 const options = {
   pages: {
     signIn: "/login",
-    signOut: "/login",
+    signOut: "/logout",
     // error: "/auth/error", // Error code passed in query string as ?error=
     // verifyRequest: '/auth/verify-request', // (used for check email message)
     // newUser: "/", // If set, new users will be directed here on first sign in
@@ -45,11 +45,24 @@ const options = {
 
           return new Promise((resolve, reject) => {
             User.findOne({ email: credentials.email }, (err, data) => {
-              if (err) return reject({ type: "error", message: err });
+              if (err)
+                return reject({
+                  type: "error",
+                  message: err.message,
+                  query: "Database_error",
+                });
               if (!data)
-                return reject({ type: "failed", message: "No user found" });
+                return reject({
+                  type: "failed",
+                  message: "No user found",
+                  query: "Incorrect_email",
+                });
               if (!(data.password === credentials.password))
-                return reject({ type: "failed", message: "Wrong password" });
+                return reject({
+                  type: "failed",
+                  message: "Wrong password",
+                  query: "Incorrect_password",
+                });
               return resolve(data);
             });
           });
@@ -60,8 +73,12 @@ const options = {
           const user = await findUser(credentials);
           return user;
         } catch (err) {
+          // custom error query:
+          // https://github.com/nextauthjs/next-auth/issues/413
+
           console.log(err);
-          return null;
+          return Promise.reject(`/login?error=${err.query}`);
+          // return Promise.reject(new Error("an error message")); //to error page
         }
       },
     }),

@@ -50,9 +50,9 @@ export default function SignIn({ csrfToken, error }) {
 
     return (
       <div>
-        {error == "CredentialsSignin" && (
+        {error == "Database_error" && (
           <Typography variant="subtitle2" className={classes.errMsg}>
-            Invalid Email or Password
+            Database error, please try again.
           </Typography>
         )}
         <form method="post" action="/api/auth/callback/credentials">
@@ -61,25 +61,39 @@ export default function SignIn({ csrfToken, error }) {
           <FormControl>
             <InputLabel htmlFor="email">E-mail</InputLabel>
             <Input
+              required
               name="email"
               type="email"
               id="email"
               value={inputs.username}
               onChange={handleChange}
               aria-describedby="username-helper"
+              error={error == "Incorrect_email"}
             />
-            <FormHelperText id="username-helper"></FormHelperText>
+            {error == "Incorrect_email" && (
+              <FormHelperText error id="username-helper">
+                Incorrect email
+              </FormHelperText>
+            )}
           </FormControl>
           <br />
           <FormControl>
             <InputLabel htmlFor="password">Password</InputLabel>
             <Input
+              required
               name="password"
               type="password"
               id="password"
               value={inputs.password}
               onChange={handleChange}
+              aria-describedby="password-helper"
+              error={error == "Incorrect_password"}
             />
+            {error == "Incorrect_password" && (
+              <FormHelperText error id="password-helper">
+                Incorrect password
+              </FormHelperText>
+            )}
           </FormControl>
           <br />
           <Button type="submit" color="primary" variant="contained">
