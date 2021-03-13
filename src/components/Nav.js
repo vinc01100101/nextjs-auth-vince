@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { makeStyles } from "@material-ui/core/styles";
+import MenuIcon from "@material-ui/icons/Menu";
 import {
   AppBar,
   Avatar,
@@ -9,7 +10,6 @@ import {
   Typography,
   Button,
   IconButton,
-  MenuIcon,
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -19,6 +19,9 @@ const useStyles = makeStyles({
   db: {
     justifySelf: "flex-end",
     color: "#70e35c",
+  },
+  hr: {
+    height: 30,
   },
 });
 const Nav = () => {
@@ -46,6 +49,14 @@ const Nav = () => {
   return (
     <AppBar className={classes.nav}>
       <Toolbar>
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color="inherit"
+          aria-label="menu"
+        >
+          <MenuIcon />
+        </IconButton>
         <Link href="/">
           <a>
             <Button color="inherit">Home</Button>
@@ -56,9 +67,17 @@ const Nav = () => {
             <Button color="inherit">About</Button>
           </a>
         </Link>
-        <Button color="inherit" onClick={session ? signOut : signIn}>
-          {session ? "Log out" : "Log in"}
-        </Button>
+        {session ? (
+          <Button color="inherit" onClick={signOut}>
+            Logout
+          </Button>
+        ) : (
+          <Link href="/login">
+            <a>
+              <Button color="inherit">Login</Button>
+            </a>
+          </Link>
+        )}
         {session ? (
           <>
             <Avatar src={session.user.image} />

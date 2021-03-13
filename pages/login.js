@@ -16,6 +16,18 @@ const useStyles = makeStyles({
   errMsg: {
     color: "red",
   },
+  separator: {
+    display: "flex",
+    alignItems: "center",
+    textAlign: "center",
+    width: 300,
+
+    "&::after , &::before": {
+      content: "''",
+      flex: 1,
+      borderTop: "3px solid #000",
+    },
+  },
 });
 
 export default function SignIn({ csrfToken, error }) {
@@ -74,7 +86,7 @@ export default function SignIn({ csrfToken, error }) {
             Submit
           </Button>
         </form>
-        <hr />
+        <div className={classes.separator}>OR</div>
         <Button variant="outlined" onClick={() => signIn("github")}>
           Sign in with GitHub
         </Button>
