@@ -4,7 +4,7 @@ import User from "@/models/User";
 
 //returns "production" if deployed in prod
 const mode = process.env.NODE_ENV;
-
+console.log(mode);
 //used localhost as callback in development mode
 const {
   GITHUB_ID,

@@ -10,6 +10,11 @@ import {
   Typography,
   Button,
   IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
 } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -23,6 +28,9 @@ const useStyles = makeStyles({
   hr: {
     height: 30,
   },
+  list: {
+    width: 250,
+  },
 });
 const Nav = () => {
   //check if there's an active session
@@ -31,6 +39,9 @@ const Nav = () => {
 
   //database status
   const [isConnected, setIsConnected] = useState("connecting..");
+
+  //drawer
+  const [isOpen, setIsOpen] = useState(false);
 
   //connect database
   useEffect(() => {
@@ -46,6 +57,43 @@ const Nav = () => {
     fetcher();
   }, []);
 
+  //get the list
+  const list = () => {
+    return (
+      <div
+        className={classes.list}
+        role="presentation"
+        onClick={toggleDrawer(false)}
+        onKeyDown={toggleDrawer(false)}
+      >
+        <List>
+          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {["All mail", "Trash", "Spam"].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      </div>
+    );
+  };
+  //toggle drawer show/hide
+  const toggleDrawer = (bool) => (event) => {
+    // if (
+    //   event.type === "keydown" &&
+    //   (event.key === "Tab" || event.key === "Shift")
+    // ) {
+    //   return;
+    // }
+    setIsOpen(bool);
+  };
   return (
     <AppBar className={classes.nav}>
       <Toolbar>
@@ -54,6 +102,7 @@ const Nav = () => {
           className={classes.menuButton}
           color="inherit"
           aria-label="menu"
+          onClick={toggleDrawer(true)}
         >
           <MenuIcon />
         </IconButton>
@@ -96,6 +145,14 @@ const Nav = () => {
           {"Database status: " + isConnected}
         </Typography>
       </Toolbar>
+      <Drawer
+        anchor="left"
+        open={isOpen}
+        onClose={toggleDrawer(false)}
+        transitionDuration={{ enter: 500, exit: 500 }}
+      >
+        {list()}
+      </Drawer>
     </AppBar>
   );
 };
