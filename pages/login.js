@@ -7,10 +7,25 @@ import {
   InputLabel,
   Button,
   Typography,
+  Container,
+  Paper,
 } from "@material-ui/core";
 
 import { csrfToken, signIn } from "next-auth/client";
 import { makeStyles } from "@material-ui/core/styles";
+
+/*
+ * import formStyles::
+ * custom styles for forms; used in /login and /register page
+ * form format:
+ * <Container>
+ *  <Paper>
+ *    <form>
+ *    </form>
+ *  </Paper>
+ * </Container
+ */
+import formStyles from "@/theme/formStyles";
 
 const useStyles = makeStyles({
   errMsg: {
@@ -28,6 +43,7 @@ const useStyles = makeStyles({
       borderTop: "3px solid #000",
     },
   },
+  ...formStyles,
 });
 
 export default function SignIn({ csrfToken, error }) {
@@ -49,62 +65,69 @@ export default function SignIn({ csrfToken, error }) {
     };
 
     return (
-      <div>
-        {error == "Database_error" && (
-          <Typography variant="subtitle2" className={classes.errMsg}>
-            Database error, please try again.
-          </Typography>
-        )}
-        <form method="post" action="/api/auth/callback/credentials">
-          <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-          <br />
-          <FormControl>
-            <InputLabel htmlFor="email">E-mail</InputLabel>
-            <Input
-              required
-              name="email"
-              type="email"
-              id="email"
-              value={inputs.username}
-              onChange={handleChange}
-              aria-describedby="username-helper"
-              error={error == "Incorrect_email"}
-            />
-            {error == "Incorrect_email" && (
-              <FormHelperText error id="username-helper">
-                Incorrect email
-              </FormHelperText>
-            )}
-          </FormControl>
-          <br />
-          <FormControl>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
-              required
-              name="password"
-              type="password"
-              id="password"
-              value={inputs.password}
-              onChange={handleChange}
-              aria-describedby="password-helper"
-              error={error == "Incorrect_password"}
-            />
-            {error == "Incorrect_password" && (
-              <FormHelperText error id="password-helper">
-                Incorrect password
-              </FormHelperText>
-            )}
-          </FormControl>
-          <br />
-          <Button type="submit" color="primary" variant="contained">
-            Submit
+      <Container className={classes.container}>
+        <Paper elevation={3} className={classes.paper}>
+          <Typography variant="h1">Login</Typography>
+          {error == "Database_error" && (
+            <Typography variant="subtitle2" className={classes.errMsg}>
+              Database error, please try again.
+            </Typography>
+          )}
+          <form
+            method="post"
+            action="/api/auth/callback/credentials"
+            className={classes.form}
+          >
+            <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+            <br />
+            <FormControl>
+              <InputLabel htmlFor="email">E-mail</InputLabel>
+              <Input
+                required
+                name="email"
+                type="email"
+                id="email"
+                value={inputs.username}
+                onChange={handleChange}
+                aria-describedby="username-helper"
+                error={error == "Incorrect_email"}
+              />
+              {error == "Incorrect_email" && (
+                <FormHelperText error id="username-helper">
+                  Incorrect email
+                </FormHelperText>
+              )}
+            </FormControl>
+            <br />
+            <FormControl>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                required
+                name="password"
+                type="password"
+                id="password"
+                value={inputs.password}
+                onChange={handleChange}
+                aria-describedby="password-helper"
+                error={error == "Incorrect_password"}
+              />
+              {error == "Incorrect_password" && (
+                <FormHelperText error id="password-helper">
+                  Incorrect password
+                </FormHelperText>
+              )}
+            </FormControl>
+            <br />
+            <Button type="submit" color="primary" variant="contained">
+              Submit
+            </Button>
+          </form>
+          <div className={classes.separator}>OR</div>
+          <Button variant="outlined" onClick={() => signIn("github")}>
+            Sign in with GitHub
           </Button>
-        </form>
-        <div className={classes.separator}>OR</div>
-        <Button variant="outlined" onClick={() => signIn("github")}>
-          Sign in with GitHub
-        </Button>
-      </div>
+        </Paper>
+      </Container>
     );
   } else if (!loading && session) {
     //if the browser has active session (user is authorized),

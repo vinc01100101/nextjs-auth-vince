@@ -23,13 +23,19 @@ const useStyles = makeStyles({
   },
   db: {
     justifySelf: "flex-end",
-    color: "#70e35c",
+    color: "black",
   },
   hr: {
     height: 30,
   },
   list: {
     width: 250,
+  },
+  scode: {
+    background: "black",
+  },
+  scodetext: {
+    color: "red",
   },
 });
 const Nav = () => {
@@ -75,11 +81,27 @@ const Nav = () => {
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {["All mail", "Trash", "Spam", "Go To Source Code =>"].map(
+            (text, index) => (
+              <ListItem
+                button
+                key={text}
+                className={text == "Go To Source Code =>" && classes.scode}
+              >
+                {text == "Go To Source Code =>" ? (
+                  <a
+                    href="https://github.com/vinc01100101/nextjs-auth-vince"
+                    target="_blank"
+                    className={classes.scodetext}
+                  >
+                    {text}
+                  </a>
+                ) : (
+                  <ListItemText primary={text} />
+                )}
+              </ListItem>
+            )
+          )}
         </List>
       </div>
     );
