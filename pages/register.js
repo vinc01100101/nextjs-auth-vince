@@ -51,7 +51,7 @@ const RegistrationForm = ({ message }) => {
 
     return (
       <Container className={classes.container}>
-        <Paper className={classes.paper}>
+        <Paper elevation={3} className={classes.paper}>
           <Typography variant="h1">Register</Typography>
           <form action="/api/register" method="POST" className={classes.form}>
             {message == "success" && (
