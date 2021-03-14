@@ -5,12 +5,17 @@ const handler = async (req, res) => {
   if (req.method == "POST") {
     try {
       await Users.create(req.body);
-      res.redirect("/");
+      return res.redirect("/register?message=success");
     } catch (e) {
-      res.send("Email already exists");
+      console.log(e._message);
+      if (e._message == "User validation failed") {
+        return res.redirect("/register?message=email_already_exists");
+      } else {
+        return res.redirect("/register?message=server_error");
+      }
     }
   } else {
-    res.send("Only post method allowed");
+    return res.send("Only post method allowed");
   }
 };
 

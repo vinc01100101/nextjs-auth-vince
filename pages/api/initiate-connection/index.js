@@ -1,7 +1,6 @@
 import dbConnect from "@/utils/dbConnect";
 
 export default (req, res) => {
-  console.log("API init-db");
   /*  
   return a promise to prevent stalled-request warning
 

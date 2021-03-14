@@ -1,6 +1,9 @@
+/* This will be accessed by /api/initiate-connection */
+
 import mongoose from "mongoose";
 
 function dbConnect(res) {
+  console.log("API init-db");
   return new Promise((resolve) => {
     /*
       check if we have a current connection to the database
@@ -15,6 +18,7 @@ function dbConnect(res) {
     const status = ["disconnected", "connected", "connecting", "disconnecting"];
     const state = mongoose.connection.readyState;
     if (state != 0) {
+      console.log("Already open.");
       res.json({ type: "success", status: status[state] });
       return resolve();
     }
@@ -33,6 +37,7 @@ function dbConnect(res) {
           res.status(500).end();
           return resolve();
         }
+        console.log("Db initiated.");
         res.json({ type: "success", status: "connected" });
         return resolve();
       }

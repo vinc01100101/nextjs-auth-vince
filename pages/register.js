@@ -6,9 +6,17 @@ import {
   Input,
   InputLabel,
   Button,
+  Typography,
 } from "@material-ui/core";
 
-const RegistrationForm = () => {
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  successMessage: { color: "green" },
+});
+const RegistrationForm = ({ message }) => {
+  const classes = useStyles();
+
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
@@ -27,6 +35,11 @@ const RegistrationForm = () => {
 
     return (
       <form action="/api/register" method="POST">
+        {message == "success" && (
+          <Typography variant="h5" className={classes.successMessage}>
+            Registration successful
+          </Typography>
+        )}
         <FormControl>
           <InputLabel htmlFor="name">Name</InputLabel>
           <Input
@@ -50,8 +63,13 @@ const RegistrationForm = () => {
             onChange={handleChange}
             aria-describedby="username-helper"
           />
-          <FormHelperText id="username-helper">
-            This will be used for logging in.
+          <FormHelperText
+            id="username-helper"
+            error={message == "email_already_exists"}
+          >
+            {message == "email_already_exists"
+              ? "Email already exists"
+              : "This will be used for logging in."}
           </FormHelperText>
         </FormControl>
         <br />
@@ -80,4 +98,11 @@ const RegistrationForm = () => {
   return <h3>Loading..</h3>;
 };
 
+export const getServerSideProps = async (context) => {
+  return {
+    props: {
+      message: context.query.message || null,
+    },
+  };
+};
 export default RegistrationForm;
